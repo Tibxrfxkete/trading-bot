@@ -1,0 +1,17 @@
+from fastapi import FastAPI
+import random
+
+app = FastAPI()
+
+@app.get("/signal")
+def get_signal(budget: float):
+    rsi = random.uniform(20, 80)
+    signal = "Buy" if rsi < 30 else "Sell" if rsi > 70 else "Hold"
+    suggested_investment = budget * 0.25 if signal == "Buy" else 0
+
+    return {
+        "market": "BTC/USD",
+        "signal": signal,
+        "rsi": round(rsi, 2),
+        "suggested_investment": round(suggested_investment, 2)
+    }
